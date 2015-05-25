@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)http://mbostock.github.io/d3/talk/20111116/bundle.html -->
+<html hola_ext_inject="ready">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
+<link type="text/css" rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="fonts/bariol/bariol.css"/>
+<link rel="stylesheet" href="autocomplete_style.css"/>
+<style type="text/css">
+
+path.arc {
+  cursor: move;
+  fill: #fff;
+}
+
+.node {
+  font-size: 1.5px;
+}
+
+.svg{
+	scale: 2;
+}
+.node:hover {
+  fill: #1f77b4;
+}
+
+.link {
+  fill: none;
+  stroke: #1f77b4;
+  stroke-opacity: 0;
+  pointer-events: none;
+}
+
+.link.source, .link.target, .link.action {
+  stroke-opacity: 1;
+  stroke-width: 2px;
+  
+}
+
+.popover{
+	font-size: 10px;
+	background: white;
+	padding: 10px;
+	width: 200px;
+	box-shadow: 0px 10px 15px #888888;
+	border-radius: 10px;
+}
+.node.target {
+  fill: #d62728 !important;
+}
+
+.link.source {
+  stroke: #d62728;
+}
+
+.node.source {
+  fill: #2ca02c;
+}
+
+.link.target {
+  stroke: #2ca02c;
+}
+
+.link.action {
+	stroke: #FFCC00;
+}
+
+.link.adventure {
+	stroke: #66FF33;
+}
+
+
+
+    </style>
+  <style type="text/css"></style></head>
+  <body hola-ext-player="1">
+  <!--<div id="test" style="z-index: 200;position:fixed;top: 10%;width:100%; height:100%;"></div>-->
+  <div style="z-index: 200; position:fixed;top:50px;left: 10px;font-size:18px;">Year: 
+  <input style="position:absolute;top:3px;left: 90px;" type="range" id="year" min="5" max="353" value="5"  oninput="outputUpdate(value)">
+  <output for=fader id=output>2007</output>
+  </div>
+  
+  	<div style="z-index: 200; position:fixed;top:100px;left: 10px;font-size:18px;">Zoom: 
+  	<input style="position:absolute;top:3px;left: 90px;" type="range" id="zoom" min="0" max="100" value="0"  oninput="outputUpdateZoom(value)">
+  	<output for=fader id=outputZoom>0%</output>
+  	</div>
+  	
+  	<div style="z-index: 200; position:fixed;top:150px;left: 10px;font-size:18px;">Genres: 
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Action"  onclick="genreActive('Action')">
+  	
+  	<div style="z-index: 200; position:fixed;top:150px;left: 90px;font-size:18px;"> 
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Adventure"  onclick="genreActive('Adventure')">
+  	
+  	<div style="z-index: 200; position:fixed;top:175px;left: 10px;font-size:18px;">
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Animation"  onclick="genreActive('Animation')">
+  	
+  	<div style="z-index: 200; position:fixed;top:175px;left: 90px;font-size:18px;"> 
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Biography"  onclick="genreActive('Biography')">
+  	
+  	<div style="z-index: 200; position:fixed;top:200px;left: 10px;font-size:18px;">
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Comedy"  onclick="genreActive('Comedy')">
+  	
+  	<div style="z-index: 200; position:fixed;top:200px;left: 90px;font-size:18px;">
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Crime"  onclick="genreActive('Crime')">
+  	</div>
+  	
+  	<div style="z-index: 200; position:fixed;top:225px;left: 10px;font-size:18px;">
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Documentary"  onclick="genreActive('Documentary')">
+  	</div>
+  	
+  	<div style="z-index: 200; position:fixed;top:225px;left: 90px;font-size:18px;"> 
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Drama"  onclick="genreActive('Drama')">
+  	</div>
+  	
+  	<div style="z-index: 200; position:fixed;top:250px;left: 10px;font-size:18px;"> 
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Fantasy"  onclick="genreActive('Fantasy')">
+  	</div>
+  	
+  	<div style="z-index: 200; position:fixed;top:250px;left: 90px;font-size:18px;"> 
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Horror"  onclick="genreActive('Horror')">
+  	</div>
+  	
+  	<div style="z-index: 200; position:fixed;top:275px;left: 10px;font-size:18px;"> 
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Music"  onclick="genreActive('Music')">
+  	</div>
+  	
+  	<div style="z-index: 200; position:fixed;top:275px;left: 90px;font-size:18px;"> 
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Musical"  onclick="genreActive('Musical')">
+  	</div>
+  	
+  	<div style="z-index: 200; position:fixed;top:300px;left: 10px;font-size:18px;"> 
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Mystery"  onclick="genreActive('Mystery')">
+  	</div>
+  	
+  	<div style="z-index: 200; position:fixed;top:300px;left: 90px;font-size:18px;"> 
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Romance"  onclick="genreActive('Romance')">
+  	</div>
+  	
+  	<div style="z-index: 200; position:fixed;top:325px;left: 10px;font-size:18px;"> 
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Sci-Fi"  onclick="genreActive('Sci-Fi')">
+  	</div>
+  	
+  	<div style="z-index: 200; position:fixed;top:325px;left: 90px;font-size:18px;"> 
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Thriller"  onclick="genreActive('Thriller')">
+  	</div>
+  	
+  	<div style="z-index: 200; position:fixed;top:350px;left: 10px;font-size:18px;"> 
+  	<input style="position:absolute;top:3px;left: 70px;" type="button" id="zoom" min="0" max="100" value="Western"  onclick="genreActive('Western')">
+  	</div>
+  	
+  	
+  	
+  	
+  	
+  	
+    <div style="z-index: 200;position:fixed;bottom:50px;left: 10px;font-size:18px;">tension: 
+    <input style="position:absolute;top:3px;left: 80px;" type="range" id="tension" min="0" max="100" value="85"></div>
+    <script type="text/javascript" src="d3.js"></script>
+    <script type="text/javascript" src="d3.layout.js"></script>
+    <script type="text/javascript" src="packages.js"></script>
+     <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="d3.min.js"></script>
+    <script type="text/javascript" src="autocomplete.js"></script>
+    <script type="text/javascript">
+		
+		
+		function outputUpdate(val) {
+		if(val>28){
+			document.querySelector('#output').value = 2008;
+			if(val>90){
+				document.querySelector('#output').value = 2009;
+				if(val>154){
+					document.querySelector('#output').value = 2010;
+					if(val>200){
+						document.querySelector('#output').value = 2011;
+						if(val>256){
+							document.querySelector('#output').value = 2012;
+							if(val>296){
+								document.querySelector('#output').value = 2013;
+							
+							}
+						}
+					}
+				}
+			}
+		}else	document.querySelector('#output').value = 2007;
+		
+		svg.attr("transform", "translate(" + rx + "," + ry + ")rotate(" + ((-1*val)-5) + ")")
+		}
+		
+		function outputUpdateZoom(val) {
+				document.querySelector('#outputZoom').value = val + "%";
+//				svg.attr("viewbox","0 0 " +val + " " + val)
+//				   .attr("preserveAspectRatio","xMinYMin slice")
+				   shape = document.getElementsByTagName("svg")[0];
+				   shape.setAttribute("viewBox", ((w/200)*(val)) + " 0 " + (w-2*((w/200)*(val))) +" "+(h-((h/100)*val)))
+				 
+		//			 shape.setAttribute("viewBox", "0 0 0 "+((100/h)*val))	
+				   shape.setAttribute("preserveAspectRatio","xMidYMin ")
+				//svg.attr("transform", "translate(" + rx*(10-1) +"," + -ry*(s0-1) +")scale(" + 10 + r")")
+				
+		}
+		
+var w = window.innerWidth,
+    h = window.innerHeight,
+    rx = w / 2,
+    ry = h / 2,
+    m0,
+    rotate = 0,
+    keys,
+    oldgenre;
+		
+var splines = [];
+
+var cluster = d3.layout.cluster()
+    .size([360, ry - 50])
+  //  .sort(function(a, b) { return d3.ascending(a.key, b.key); });
+
+var bundle = d3.layout.bundle();
+
+var line = d3.svg.line.radial()
+    .interpolate("bundle")
+    .tension(.85)
+    .radius(function(d) { return d.y; })
+    .angle(function(d) { return d.x / 180 * Math.PI; });
+
+// Chrome 15 bug: <http://code.google.com/p/chromium/issues/detail?id=98951>
+var div = d3.select("body").insert("div", "h2")
+    .style("top", "-80px")
+    .style("left", "-160px")
+    .style("width", w + "px")
+    .style("height", w + "px")
+    .style("position", "absolute")
+    .style("-webkit-backface-visibility", "hidden");
+
+var svg = div.append("svg:svg")
+    .attr("width", w)
+    .attr("height", w)
+  .append("svg:g")
+    .attr("transform", "translate(" + rx + "," + ry + ")rotate(-10)");
+
+svg.append("svg:path")
+    .attr("class", "arc")
+    .attr("d", d3.svg.arc().outerRadius(ry - 150).innerRadius(0).startAngle(0).endAngle(2 * Math.PI))
+    .on("mousedown", mousedown);
+    
+d3.json("time_data.json", function(classes) {
+  var nodes = cluster.nodes(packages.root(classes)),
+      links = packages.imports(nodes),
+      splines = bundle(links);
+		
+  var path = svg.selectAll("path.link")
+      .data(links)
+    .enter().append("svg:path")
+      .attr("class", function(d) { return "link source-" + d.source.key + " target-" + d.target.key; })
+      .attr("d", function(d, i) { return line(splines[i]); });
+
+  svg.selectAll("g.node")
+      .data(nodes.filter(function(n) { return !n.children; }))
+    .enter().append("svg:g")
+      .attr("class", "node")
+      .attr("id", function(d) { return "node-" + d.key; })
+      .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y-5) + ")"; })
+    .append("svg:text")
+      .attr("dx", function(d) { return d.x < 180 ? 8 : -8; })
+      .attr("dy", ".31em")
+      .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+      .attr("transform", function(d) { return d.x < 180 ? null : "rotate(180)"; })
+      .text(function(d) { return d.key; })
+      .on("mouseover", mouseover)
+      .on("mouseout", mouseout);
+
+  d3.select(document.getElementById('tension')).on("change", function() {
+    line.tension(this.value / 100);
+    path.attr("d", function(d, i) { return line(splines[i]); });
+  });
+  
+//  d3.select(document.getElementById('year')).on("change", function() {
+//    line.tension(this.value / 100);
+//    path.attr("d", function(d, i) { return line(splines[i]); });
+// 		svg.attr("transform", "translate(" + rx + "," + ry + ")rotate(" + this.value + ")")
+//  });
+});
+
+d3.select(window)
+//    .on("mousemove", mousemove)
+//    .on("mouseup", mouseup);
+//
+function mouse(e) {
+  return [e.pageX - rx, e.pageY - ry];
+}
+
+function mousedown() {
+  m0 = mouse(d3.event);
+  d3.event.preventDefault();
+}
+
+function mousemove() {
+  if (m0) {
+    var m1 = mouse(d3.event),
+        dm = Math.atan2(cross(m0, m1), dot(m0, m1)) * 180 / Math.PI;
+    div.style("-webkit-transform", "translateY(" + (ry - rx) + "px)rotateZ(" + dm + "deg)translateY(" + (rx - ry) + "px)");
+  }
+}
+
+function mouseup() {
+  if (m0) {
+//    var m1 = mouse(d3.event),
+//        dm = Math.atan2(cross(m0, m1), dot(m0, m1)) * 180 / Math.PI;
+//
+//    rotate += dm;
+//    if (rotate > 360) rotate -= 360;
+//    else if (rotate < 0) rotate += 360;
+//    m0 = null;
+//
+//    div.style("-webkit-transform", null);
+//
+//    svg.attr("transform", "translate(" + rx + "," + ry + ")rotate(" + rotate + ")")
+//     	 .selectAll("g.node text")
+//        .attr("dx", function(d) { return (d.x + rotate) % 360 < 180 ? 8 : -8; })
+//        .attr("text-anchor", function(d) { return (d.x + rotate) % 360 < 180 ? "start" : "end"; })
+//        .attr("transform", function(d) { return (d.x + rotate) % 360 < 180 ? null : "rotate(180)"; });
+  }
+}
+
+function mouseover(d) {
+
+  showPopover.call(this, d);
+  svg.selectAll("path.link.target-" + d.key)
+      .classed("target", true)
+      .each(updateNodes("source", true));
+
+  svg.selectAll("path.link.source-" + d.key)
+      .classed("source", true)
+      .each(updateNodes("target", true));
+}
+
+function mouseout(d) {
+	removePopovers();
+  svg.selectAll("path.link.source-" + d.key)
+      .classed("source", false)
+      .each(updateNodes("target", false));
+
+  svg.selectAll("path.link.target-" + d.key)
+      .classed("target", false)
+      .each(updateNodes("source", false));
+}
+
+function genreActive(d) {
+
+ 
+  svg.selectAll("path.link.target-" + d)
+      .classed(d.toLowerCase(), true)
+      .each(updateNodes("source", true));
+
+  svg.selectAll("path.link.source-" + d)
+      .classed("source", true)
+      .each(updateNodes("target", true));
+}
+
+function genreDeactive(d) {
+
+  svg.selectAll("path.link.source-" + d)
+      .classed("source", false)
+      .each(updateNodes("target", false));
+
+  svg.selectAll("path.link.target-" + d)
+      .classed("target", false)
+      .each(updateNodes("source", false));
+}
+
+
+
+//d3.csv("file_final.csv",function (csv) {
+//       keys=csv;
+//       start();
+//   });
+//Call back for when user selects an option
+//    function onSelect(d) {
+//        alert(d.name);
+//    }
+//
+//    //Setup and render the autocomplete
+//    function start() {
+//        var mc = autocomplete(document.getElementById('test'))
+//                .keys(keys)
+//                .dataField("Film")
+//                .placeHolder("Search Films - Start typing here")
+//                .width(960)
+//                .height(500)
+//                .onSelected(onSelect)
+//                .render();
+//    }
+
+function updateNodes(name, value) {
+  return function(d) {
+    if (value) this.parentNode.appendChild(this);
+    svg.select("#node-" + d[name].key).classed(name, value);
+  };
+}
+
+function cross(a, b) {
+  return a[0] * b[1] - a[1] * b[0];
+}
+
+function dot(a, b) {
+  return a[0] * b[0] + a[1] * b[1];
+}
+
+function removePopovers () {
+          $('.popover').each(function() {
+            $(this).remove();
+          }); 
+        }
+
+        function showPopover (d) {
+          $(this).popover({
+            placement: 'auto top',
+            container: 'body',
+            trigger: 'manual',
+            html : true,
+            content: function() { 
+              return "Film: " + d.name + "<br />" +
+              "Studio: " + d.studio + "<br />" +
+              "Genre: " + d.imports + "<br />" +
+              "Imdb Rating: " + d.imdb + "<br />" +
+              "Budget: " + d.Budget + " Million<br />" +
+              "Release Date: " + d.release + "<br />" +
+              "Director: " + d.Director + "<br />" +
+              "<img left='30px' height='150px' src='" + d.Poster + "'><br />" ; 
+            }
+          });
+          $(this).popover('show')
+       }
+
+    </script>
+  
+
+</body></html>
